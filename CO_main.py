@@ -1,8 +1,8 @@
-from logging import exception
 import time
 import gspread
 import do_requests as api
 from gspread_dataframe import set_with_dataframe
+from slack_bot import Send_Msg_to_channel
 
 '''NOTAS: los workbook tienen un limite de 10M cells, y si esto se supera nos lanza este error:
 NOK - Algo salio mal: {'code': 400, 'message': 'Invalid requests[0].updateSheetProperties: This action would increase the number of cells in the workbook above the limit of 10000000 cells.', 'status': 'INVALID_ARGUMENT'}
@@ -25,5 +25,7 @@ try:
     id_worksheet = worksheet.worksheet(f'CO_{str_time}').id
     print(
         f"OK - Se completo el proceso, link https://docs.google.com/spreadsheets/d/1pARHTSCtVEPMdIWfM_TsgzdxyYwUoVLULpH9Rq7DYRo/edit#gid={id_worksheet}")
+    Send_Msg_to_channel(
+        f"Se actualizo la planilla de Custom Offsets, link: https://docs.google.com/spreadsheets/d/1pARHTSCtVEPMdIWfM_TsgzdxyYwUoVLULpH9Rq7DYRo/edit#gid={id_worksheet}")
 except Exception as e:
     print(f"NOK - Algo salio mal: {e}")
